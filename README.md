@@ -11,5 +11,4 @@
 
 ### todolist- app - Preview
 
-![rsz_11624440341900](https://user-images.githubusercontent.com/86313518/123082367-905be580-d43c-11eb-8256-9f777b1c8cd6.jpg)
-
+![rsz_1rsz_11624440341900 (1)](https://user-images.githubusercontent.com/86313518/123082605-d44eea80-d43c-11eb-83e7-57a25a0d6ae8.jpg)
