@@ -2,11 +2,11 @@
 
 ## Clone & Install
 
- * Clone this repo git clone 
- * cd Todo
- * Run npm install
- * Run npm start
- * Press i to run in iOS simulator or press a for Android
+ * Clone this repo git clone https://github.com/Koteswari24/todo-react-native.git
+ * **cd ToDoList**
+ * Run **npm install**
+ * Run **react-native start** to open node.js
+ * Run **react-native run-android** for Android platform
             
 
 ### todolist- app - Preview
