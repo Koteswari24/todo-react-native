@@ -25,6 +25,7 @@ export default class ToDoList extends Component {
         this.state = {
             showNotes: [],
             addItem: '',
+            isSelect: 'false',
         };
     }
 
@@ -33,7 +34,7 @@ export default class ToDoList extends Component {
     }
 
     handleInputChange = text => {
-        this.setState({ addItem: text });
+        this.setState({ addItem: text, isSelect: 'false' });
     };
 
     addItems = () => {
@@ -43,13 +44,14 @@ export default class ToDoList extends Component {
                 prevState => {
                     let { showNotes, addItem } = prevState;
                     return {
-                        showNotes: showNotes.concat({ key: showNotes.length, addItem: addItem }),
+                        showNotes: showNotes.concat({ addItem: addItem, isSelect: 'false' }),
                         addItem: '',
                     };
                 },
                 () => Tasks.save(this.state.showNotes)
             );
         }
+
     };
 
     deleteItem = (i) => {
@@ -63,7 +65,27 @@ export default class ToDoList extends Component {
         );
     };
 
+    isSelectItem = (index) => {
+        if (this.state.showNotes[index].isSelect === 'true') {
+            this.state.showNotes[index].isSelect = 'false'
+        }
+        else {
+            this.state.showNotes[index].isSelect = 'true'
+        }
+
+        this.setState((prevState) => {
+            return {
+                ...prevState,
+                showNotes: prevState.showNotes,
+            };
+
+        },
+            () => Tasks.save(this.state.showNotes)
+        );
+    }
+
     render() {
+
         return (
             <SafeAreaView style={styles.screenStyle}>
                 <StatusBar backgroundColor={'#7dced4'} barStyle="light-content" />
@@ -108,10 +130,15 @@ export default class ToDoList extends Component {
                                 renderItem={({ item, index }) => (
                                     <View style={styles.insideContainer}>
                                         <View style={styles.notesContainer}>
-                                            <View style={styles.flexStyle}>
-                                                <View style={styles.bulletStyles} />
-                                                <Text style={styles.addItemStyles}>{item.addItem}</Text>
-                                            </View>
+
+                                            <TouchableOpacity onPress={() => this.isSelectItem(index)}>
+                                                <View style={styles.flexStyle}>
+                                                    <View style={[styles.bulletStyles,{backgroundColor: item.isSelect === 'true' ? '#32a852' : '#a89f9e'}]} />
+                                                    <Text style={[styles.addItemStyles, { textDecorationLine: item.isSelect === 'true' ? 'line-through' : 'none', color: item.isSelect === 'true' ? '#32a852' : '#262525' }]}>{item.addItem}</Text>
+                                                </View>
+                                            </TouchableOpacity>
+
+
                                             <TouchableOpacity
                                                 onPress={() => this.deleteItem(index)}
                                                 style={styles.imageAlign}>
@@ -142,13 +169,12 @@ export default class ToDoList extends Component {
 
 let Tasks = {
     convertToArrayOfObject(ShowNotes, callback) {
-
         return callback(
-            ShowNotes ? ShowNotes.split('||').map((item, i) => ({ key: i, addItem: item })) : []
+            ShowNotes ? ShowNotes.split('||').map((item, i) => ({ addItem: item.split('_')[0], isSelect: item.split('_')[1] })) : []
         );
     },
     convertToStringWithSeparators(ShowNotes) {
-        return ShowNotes.map(item => item.addItem).join('||');
+        return ShowNotes.map(item => item.addItem + '_' + item.isSelect).join('||');
     },
     all(callback) {
         return AsyncStorage.getItem('SHOWNOTES', (_err, ShowNotes) =>
@@ -169,8 +195,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     title: {
-        color:'#4d4b4b',
-        fontFamily:fonts.SEMIBOLD,
+        color: '#111112',
+        fontFamily: fonts.SEMIBOLD,
         fontSize: 30,
         textAlign: 'center',
         letterSpacing: 0.4,
@@ -206,11 +232,11 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         height: 20,
         width: 20,
-        padding:5
+        padding: 5
     },
     addItemStyles: {
-        color:'#262525',
-        fontFamily:fonts.MEDIUM,
+        color: '#262525',
+        fontFamily: fonts.MEDIUM,
         fontSize: 20,
         textAlign: 'left',
     },
