@@ -24,4 +24,3 @@
             In this application , To add a list of tasks you need to complete, or things that you want to do. And storing the data in local. Added delete option which you want to delete.   
 
 ### *todolist- app - Preview*
-![1624901683866](https://user-images.githubusercontent.com/86313518/123681289-44a7a280-d867-11eb-8e4d-2b885a2295fa.JPEG)
